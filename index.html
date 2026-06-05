@@ -181,6 +181,10 @@ function ordinal(n){var s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||
 
 function doSpin(){
   if(gameOver)return;
+  if(currentSpin){
+    alert('Pick a caption from the current spin before spinning again.');
+    return;
+  }
   currentSpin=rand(DATA);
   renderSpin();
 }
@@ -206,6 +210,7 @@ function renderSpin(){
   document.getElementById('idle').style.display='none';
   document.getElementById('spinCard').style.display='block';
   document.getElementById('spinBtn').textContent='\u21BA  SPIN AGAIN';
+  document.getElementById('spinBtn').disabled=true;
   document.getElementById('spinBand').textContent=currentSpin.band;
   document.getElementById('spinMeta').innerHTML=currentSpin.year+'&nbsp;&middot;&nbsp;Class '+currentSpin.class;
 
@@ -242,9 +247,12 @@ function renderSpin(){
 function assignCap(key){
   if(!currentSpin||key in roster)return;
   roster[key]={band:currentSpin.band,year:currentSpin.year,score:currentSpin.scores[key],rank:currentSpin.rankings[key]};
+  currentSpin=null;
   renderRoster();
-  renderSpin();
-  if(Object.keys(roster).length===CAPTIONS.length)finishGame();
+  document.getElementById('spinCard').style.display='none';
+  document.getElementById('spinBtn').disabled=false;
+  document.getElementById('spinBtn').textContent='\u21BA  SPIN AGAIN';
+  if(Object.keys(roster).length===CAPTIONS.length){finishGame();}
 }
 
 function renderRoster(){
