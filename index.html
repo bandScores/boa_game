@@ -249,7 +249,6 @@ function assignCap(key){
   roster[key]={band:currentSpin.band,year:currentSpin.year,score:currentSpin.scores[key],rank:currentSpin.rankings[key]};
   currentSpin=null;
   renderRoster();
-  document.getElementById('spinCard').style.display='none';
   document.getElementById('spinBtn').disabled=false;
   document.getElementById('spinBtn').textContent='\u21BA  SPIN AGAIN';
   if(Object.keys(roster).length===CAPTIONS.length){finishGame();}
