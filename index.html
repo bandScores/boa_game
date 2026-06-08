@@ -6,10 +6,11 @@
 <title>BOA Caption Draft</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#11364d;--red:#bf2a25;--blue:#4c8db8;--white:#fff;--dim:#7aa8c4;--gold:#ffd060;--green:#4ecf7a;--navy-lite:rgba(255,255,255,0.06)}
+:root{--navy:#11364d;--red:#bf2a25;--blue:#4c8db8;--white:#fff;--dim:#7aa8c4;--gold:#ffd060;--green:#4ecf7a;--navy-lite:rgba(255,255,255,0.06);--bg:var(--navy);--fg:var(--white);--card-bg:rgba(255,255,255,0.06);--card-border:rgba(76,141,184,0.35);--slot-bg:rgba(255,255,255,0.03);--slot-border:rgba(76,141,184,0.25);--mode-bg:rgba(255,255,255,0.04)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--navy);color:var(--white);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.03) 3px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:999}
+body{background:var(--bg);color:var(--fg);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+body.light{--bg:#f0f4f8;--fg:#11364d;--white:#11364d;--dim:#11364d;--navy-lite:rgba(17,54,77,0.06);--card-bg:rgba(17,54,77,0.04);--card-border:rgba(17,54,77,0.2);--slot-bg:rgba(17,54,77,0.03);--slot-border:rgba(17,54,77,0.2);--mode-bg:rgba(17,54,77,0.04)}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.02) 3px,rgba(0,0,0,0.02) 4px);pointer-events:none;z-index:999}
 .wrap{max-width:860px;margin:0 auto;padding:24px 18px 48px}
 
 /* HEADER */
@@ -19,13 +20,13 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .hdr h1 em{color:var(--red);font-style:normal}
 .stripes{display:flex;gap:4px;justify-content:center;margin-top:10px}
 .stripes div{height:4px;border-radius:2px}
-.s1{width:80px;background:var(--red)}.s2{width:60px;background:var(--blue)}.s3{width:40px;background:rgba(255,255,255,0.3)}
+.s1{width:80px;background:var(--red)}.s2{width:60px;background:var(--blue)}.s3{width:40px;background:rgba(17,54,77,0.15)}
 
 /* MODE SELECTOR */
-.mode-selector{background:rgba(255,255,255,0.04);border:1.5px solid rgba(76,141,184,0.3);border-radius:12px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.mode-selector{background:var(--mode-bg);border:1.5px solid rgba(76,141,184,0.3);border-radius:12px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .mode-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);white-space:nowrap}
 .mode-btns{display:flex;gap:6px}
-.mode-btn{background:transparent;border:1.5px solid rgba(255,255,255,0.2);border-radius:6px;padding:6px 14px;color:rgba(255,255,255,0.5);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:.15s}
+.mode-btn{background:transparent;border:1.5px solid rgba(17,54,77,0.2);border-radius:6px;padding:6px 14px;color:var(--dim);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:.15s}
 .mode-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
 .mode-btn:hover:not(.active){border-color:var(--blue);color:#fff}
 .mode-desc{font-size:10px;color:var(--dim);font-style:italic}
@@ -42,14 +43,14 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .spin-meta{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--dim);text-transform:uppercase;margin-bottom:4px}
 .spin-meta b{color:var(--blue)}
 .norm-badge{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(76,141,184,0.25);color:var(--blue);border-radius:4px;padding:2px 6px;align-self:center}
-.spin-overall{display:flex;gap:14px;align-items:baseline;margin-bottom:14px;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:7px;border-left:3px solid var(--blue)}
+.spin-overall{display:flex;gap:14px;align-items:baseline;margin-bottom:14px;padding:8px 12px;background:var(--mode-bg);border-radius:7px;border-left:3px solid var(--blue)}
 .spin-overall-score{font-size:22px;font-weight:900;color:var(--white)}
 .spin-overall-place{font-size:13px;font-weight:700;color:var(--blue)}
 .spin-overall-event{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--dim);text-transform:uppercase}
 
 /* CAPTION PICK GRID */
 .cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.cap-btn{background:rgba(255,255,255,0.05);border:1.5px solid rgba(76,141,184,0.35);border-radius:9px;padding:11px 8px 9px;cursor:pointer;transition:.15s;text-align:center;font-family:'Montserrat',sans-serif}
+.cap-btn{background:var(--card-bg);border:1.5px solid var(--card-border);border-radius:9px;padding:11px 8px 9px;cursor:pointer;transition:.15s;text-align:center;font-family:'Montserrat',sans-serif}
 .cap-btn:hover:not(:disabled):not(.is-filled){background:rgba(76,141,184,0.18);border-color:var(--blue)}
 .cap-btn:disabled{opacity:.28;cursor:not-allowed}
 .cap-btn.is-filled{border-color:rgba(191,42,37,0.35);background:rgba(191,42,37,0.05);cursor:not-allowed}
@@ -61,25 +62,25 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 /* RESPIN ROW */
 .respin-row{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap}
-.respin-btn{flex:1;min-width:140px;background:transparent;border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;padding:9px 10px;color:#fff;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:7px}
-.respin-btn:hover:not(:disabled){border-color:var(--blue);background:rgba(76,141,184,0.12)}
+.respin-btn{flex:1;min-width:140px;background:transparent;border:1.5px solid rgba(17,54,77,0.2);border-radius:8px;padding:9px 10px;color:var(--fg);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:7px}
+.respin-btn:hover:not(:disabled){border-color:var(--blue);background:rgba(76,141,184,0.12);color:var(--navy)}
 .respin-btn:disabled{opacity:.25;cursor:not-allowed}
-.rs-count{background:rgba(255,255,255,0.12);border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700}
+.rs-count{background:rgba(17,54,77,0.12);border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700}
 .rs-count.used{background:rgba(191,42,37,0.25);color:#ff9999}
 
 /* IDLE */
-.idle{text-align:center;padding:28px;color:rgba(255,255,255,0.22);font-size:13px;font-style:italic;border:1.5px dashed rgba(255,255,255,0.1);border-radius:14px;margin-bottom:18px}
+.idle{text-align:center;padding:28px;color:var(--dim);font-size:13px;font-style:italic;border:1.5px dashed var(--slot-border);border-radius:14px;margin-bottom:18px}
 
 /* ROSTER */
 .section-lbl{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
 .roster-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:22px}
-.slot{background:rgba(255,255,255,0.03);border:1.5px dashed rgba(76,141,184,0.25);border-radius:10px;padding:12px 14px;min-height:70px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;transition:.2s}
+.slot{background:var(--slot-bg);border:1.5px dashed var(--slot-border);border-radius:10px;padding:12px 14px;min-height:70px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;transition:.2s}
 .slot.filled{background:rgba(76,141,184,0.07);border-style:solid;border-color:rgba(76,141,184,0.45)}
 .slot-left{display:flex;flex-direction:column;justify-content:center;flex:1;min-width:0}
 .slot-cap{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:3px}
 .slot-band{font-weight:700;font-style:italic;font-size:12px;line-height:1.25}
 .slot-year{font-size:11px;font-weight:700;color:var(--dim);margin-top:2px}
-.slot-empty{font-size:11px;color:rgba(255,255,255,0.18);font-style:italic}
+.slot-empty{font-size:11px;color:var(--dim);opacity:0.6;font-style:italic}
 .slot-right{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;gap:3px}
 .slot-rank{font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--dim);text-transform:uppercase;white-space:nowrap}
 .slot-score{font-size:18px;font-weight:900;color:var(--white);line-height:1}
@@ -87,34 +88,43 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 /* SCORE BOARD */
 .score-board{display:none}
 .score-board.on{display:block}
-.score-header{background:rgba(255,255,255,0.03);border:1.5px solid var(--red);border-radius:14px;padding:22px;text-align:center;margin-bottom:16px}
+.score-header{background:var(--slot-bg);border:1.5px solid var(--red);border-radius:14px;padding:22px;text-align:center;margin-bottom:16px}
 .score-lbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
 .score-big{font-size:clamp(40px,9vw,62px);font-weight:900;line-height:1;margin-bottom:16px}
 
 /* 6 SCORE CARDS */
-.score-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.sc-card{background:rgba(255,255,255,0.05);border:1.5px solid rgba(76,141,184,0.25);border-radius:11px;padding:14px 12px}
-.sc-card.total-ge{border-color:rgba(76,141,184,0.5);background:rgba(76,141,184,0.08)}
-.sc-card.total-score{border-color:var(--red);background:rgba(191,42,37,0.08)}
+.score-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.sc-card{background:var(--card-bg);border:1.5px solid var(--card-border);border-radius:11px;padding:14px 12px}
 .sc-title{font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--dim);margin-bottom:8px;text-transform:uppercase}
-.sc-val{font-size:22px;font-weight:900;color:var(--white);margin-bottom:8px}
-.sc-card.total-ge .sc-val{color:var(--blue)}
-.sc-card.total-score .sc-val{color:var(--red)}
+.sc-val{font-size:22px;font-weight:900;color:var(--fg);margin-bottom:8px}
+.sc-val-red{font-size:22px;font-weight:900;color:var(--red);margin-bottom:8px}
 
 
 .slot-raw{font-size:9px;font-weight:700;color:var(--dim);letter-spacing:.3px;font-style:italic}
 .sc-raw{font-size:10px;font-weight:700;color:var(--dim);font-style:italic;margin-top:4px}
 .score-raw-sub{display:block;font-size:16px;font-weight:700;color:var(--dim);font-style:italic;margin-top:4px}
 
+/* THEME TOGGLE */
+.theme-toggle-wrap{text-align:right;margin-bottom:10px}
+.theme-btn{background:transparent;border:1.5px solid rgba(17,54,77,0.2);border-radius:20px;padding:5px 14px;color:var(--fg);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:.2s}
+.theme-btn:hover{border-color:var(--blue);color:var(--blue)}
+body.light .theme-btn{border-color:rgba(17,54,77,0.3)}
+
+/* RESPIN PENALTY */
+.rs-penalty{font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--red);margin-top:2px;font-style:italic}
+
+/* SCORE SUBTOTAL/PENALTY BOXES */
+
+
 /* SIMULATION */
-.sim-card{background:rgba(255,255,255,0.03);border:1.5px solid rgba(76,141,184,0.3);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+.sim-card{background:var(--slot-bg);border:1.5px solid rgba(76,141,184,0.3);border-radius:14px;padding:18px 20px;margin-bottom:16px}
 .sim-title{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--blue);text-transform:uppercase;margin-bottom:10px}
 .sim-result-lbl{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
 .sim-result-sub{font-size:11px;color:var(--dim);font-style:italic;margin-bottom:12px}
 .sim-bars{display:flex;flex-direction:column;gap:5px}
 .sim-row{display:flex;align-items:center;gap:8px}
 .sim-place{font-size:11px;font-weight:700;color:var(--dim);min-width:32px;text-align:right}
-.sim-bar-wrap{flex:1;height:16px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.sim-bar-wrap{flex:1;height:16px;background:var(--navy-lite);border-radius:4px;overflow:hidden}
 .sim-bar{height:100%;border-radius:4px;transition:width .6s ease;background:rgba(76,141,184,0.45)}
 .sim-bar.hi{background:var(--red)}
 .sim-pct{font-size:11px;font-weight:700;color:var(--dim);min-width:36px}
@@ -127,6 +137,52 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   .roster-grid{grid-template-columns:1fr}
   .score-cards{grid-template-columns:repeat(2,1fr)}
 }
+
+/* LIGHT MODE OVERRIDES */
+body.light .hdr h1{color:var(--navy)}
+body.light .hdr h1 em{color:var(--red)}
+body.light .spin-band{color:var(--navy)}
+body.light .spin-meta{color:var(--navy)}
+body.light .spin-meta b{color:var(--blue)}
+body.light .spin-overall-score{color:var(--navy)}
+body.light .spin-overall-place{color:var(--navy)}
+body.light .spin-overall-event{color:var(--blue)}
+body.light .spin-overall{background:rgba(17,54,77,0.05);border-left-color:var(--navy)}
+body.light .cap-rank-num{color:var(--navy)}
+body.light .cap-name-full{color:var(--navy);opacity:0.6}
+body.light .cap-btn{background:rgba(17,54,77,0.04);border-color:rgba(17,54,77,0.2)}
+body.light .cap-btn:hover:not(:disabled):not(.is-filled){background:rgba(76,141,184,0.12);border-color:var(--blue)}
+body.light .cap-btn.is-filled{background:rgba(191,42,37,0.05);border-color:rgba(191,42,37,0.3)}
+body.light .cap-filled-tag{color:var(--red)}
+body.light .slot-band{color:var(--navy)}
+body.light .slot-score{color:var(--navy)}
+body.light .slot-rank{color:var(--blue)}
+body.light .slot-raw{color:var(--navy);opacity:0.6}
+body.light .respin-btn{color:var(--navy);border-color:rgba(17,54,77,0.25)}
+body.light .rs-count{background:rgba(17,54,77,0.1);color:var(--navy)}
+body.light .rs-count.used{background:rgba(191,42,37,0.15);color:var(--red)}
+body.light .sc-card{background:rgba(17,54,77,0.04);border-color:rgba(17,54,77,0.2)}
+body.light .sc-title{color:var(--navy);opacity:0.7}
+body.light .sc-val{color:var(--navy)}
+body.light .sc-raw{color:var(--navy);opacity:0.6}
+
+body.light .sp-label{color:var(--navy);opacity:0.7}
+body.light .sp-val{color:var(--navy)}
+body.light .sim-card{background:rgba(17,54,77,0.04);border-color:rgba(17,54,77,0.15)}
+body.light .sim-title{color:var(--navy);opacity:0.7}
+body.light .sim-result-lbl{color:var(--navy)}
+body.light .sim-result-sub{color:var(--navy);opacity:0.6}
+body.light .sim-place{color:var(--navy);opacity:0.6}
+body.light .sim-pct{color:var(--navy);opacity:0.6}
+body.light .sim-bar-wrap{background:rgba(17,54,77,0.08)}
+body.light .sim-bar{background:rgba(17,54,77,0.35)}
+body.light .score-raw-sub{color:var(--navy);opacity:0.6}
+body.light .norm-badge{background:rgba(17,54,77,0.1);color:var(--navy)}
+body.light .mode-desc{color:var(--navy);opacity:0.6}
+body.light .hdr-sub{color:var(--blue)}
+body.light .section-lbl{color:var(--blue)}
+body.light .spin-lbl{color:var(--blue)}
+body.light .sim-bar.hi{background:var(--red)}
 </style>
 </head>
 <body>
@@ -136,6 +192,9 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   <div class="hdr-sub">bandscores presents</div>
   <h1>BOA <em>Caption</em> Draft</h1>
   <div class="stripes"><div class="s1"></div><div class="s2"></div><div class="s3"></div></div>
+</div>
+<div class="theme-toggle-wrap">
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode">&#9790; Dark</button>
 </div>
 
 <div class="mode-selector" id="modeSelector">
@@ -167,10 +226,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 <div class="roster-grid" id="rosterGrid"></div>
 
 <div class="score-board" id="scoreBoard">
-  <div class="score-header">
-    <div class="score-lbl">Final Score</div>
-    <div class="score-big" id="scoreBig"></div>
-  </div>
   <div class="score-cards" id="scoreCards"></div>
   <div class="sim-card">
     <div class="sim-title">Where would this score place at Grand Nationals Finals?</div>
@@ -200,7 +255,7 @@ const CAPTIONS=[
   {key:'VGE',    full:'Visual General Effect',          group:'vge'}
 ];
 
-let roster={},currentSpin=null,respinBandUsed=false,respinYearUsed=false,gameOver=false,lastAssigned=null;
+let roster={},currentSpin=null,respinBandCount=0,respinYearCount=0,gameOver=false,lastAssigned=null,totalPenalty=0;
 
 function rand(arr){return arr[Math.floor(Math.random()*arr.length)]}
 function rankClass(r){return r===1?'gold':r<=3?'green':''}
@@ -235,22 +290,29 @@ function doSpin(){
   currentSpin=rand(DATA);
   renderSpin();
 }
+var RESPIN_PENALTIES=[0,0.2,0.4,0.6];
+var MAX_RESPINS=4;
+function getRespinPenalty(count){return RESPIN_PENALTIES[count]||0;}
 function doRespinBand(){
-  if(respinBandUsed||!currentSpin)return;
+  if(respinBandCount>=MAX_RESPINS||!currentSpin)return;
+  var penalty=getRespinPenalty(respinBandCount);
   if(lastAssigned!==null){delete roster[lastAssigned];lastAssigned=null;}
   var pool=DATA.filter(function(d){return d.year===currentSpin.year&&d.band!==currentSpin.band});
-  if(!pool.length)return;
+  if(!pool.length){alert('No other bands available for this year.');return;}
+  totalPenalty=Math.round((totalPenalty+penalty)*10)/10;
   currentSpin=rand(pool);
-  respinBandUsed=true;
+  respinBandCount++;
   renderSpin();
 }
 function doRespinYear(){
-  if(respinYearUsed||!currentSpin)return;
+  if(respinYearCount>=MAX_RESPINS||!currentSpin)return;
+  var penalty=getRespinPenalty(respinYearCount);
   if(lastAssigned!==null){delete roster[lastAssigned];lastAssigned=null;}
   var pool=DATA.filter(function(d){return d.band===currentSpin.band&&d.year!==currentSpin.year});
-  if(!pool.length)return;
+  if(!pool.length){alert('No other years available for this band.');return;}
+  totalPenalty=Math.round((totalPenalty+penalty)*10)/10;
   currentSpin=rand(pool);
-  respinYearUsed=true;
+  respinYearCount++;
   renderSpin();
 }
 
@@ -285,14 +347,20 @@ function renderSpin(){
     grid.appendChild(btn);
   });
 
-  document.getElementById('rsBandBtn').disabled=respinBandUsed;
-  document.getElementById('rsYearBtn').disabled=respinYearUsed;
+  var bandExhausted=respinBandCount>=MAX_RESPINS;
+  var yearExhausted=respinYearCount>=MAX_RESPINS;
+  document.getElementById('rsBandBtn').disabled=bandExhausted;
+  document.getElementById('rsYearBtn').disabled=yearExhausted;
   var rbCt=document.getElementById('rsBandCt');
-  rbCt.textContent=respinBandUsed?'used':'1 left';
-  rbCt.className='rs-count'+(respinBandUsed?' used':'');
+  var bandLeft=MAX_RESPINS-respinBandCount;
+  var bandNextPenalty=getRespinPenalty(respinBandCount);
+  rbCt.textContent=bandExhausted?'used up':(bandNextPenalty>0?'-'+bandNextPenalty.toFixed(1)+' pts · '+bandLeft+' left':'✓ free · '+bandLeft+' left');
+  rbCt.className='rs-count'+(bandExhausted?' used':(bandNextPenalty>0?' used':''));
   var ryCt=document.getElementById('rsYearCt');
-  ryCt.textContent=respinYearUsed?'used':'1 left';
-  ryCt.className='rs-count'+(respinYearUsed?' used':'');
+  var yearLeft=MAX_RESPINS-respinYearCount;
+  var yearNextPenalty=getRespinPenalty(respinYearCount);
+  ryCt.textContent=yearExhausted?'used up':(yearNextPenalty>0?'-'+yearNextPenalty.toFixed(1)+' pts · '+yearLeft+' left':'✓ free · '+yearLeft+' left');
+  ryCt.className='rs-count'+(yearExhausted?' used':(yearNextPenalty>0?' used':''));
 }
 
 function assignCap(key){
@@ -307,6 +375,11 @@ function assignCap(key){
   document.getElementById('spinBtn').disabled=false;
   document.getElementById('spinBtn').textContent='\u21BA  SPIN AGAIN';
   if(Object.keys(roster).length===CAPTIONS.length){finishGame();}
+}
+
+function toggleTheme(){
+  var isLight=document.body.classList.toggle('light');
+  document.getElementById('themeBtn').textContent=isLight?'☀️ Light':'☺ Dark';
 }
 
 function renderRoster(){
@@ -356,21 +429,7 @@ function finishGame(){
     return rec?rec.scores[key]:null;
   }
 
-  document.getElementById('scoreBig').textContent=total.toFixed(3);
-
-  var cards=document.getElementById('scoreCards');
-  cards.innerHTML='';
-
-  function makeCard(title,val,rawVal,extraClass){
-    var d=document.createElement('div');
-    d.className='sc-card'+(extraClass?' '+extraClass:'');
-    var rawHtml='';
-    if(isNorm&&rawVal!==null){
-      rawHtml='<div class="sc-raw">Score without normalization/weight: '+rawVal.toFixed(3)+'</div>';
-    }
-    d.innerHTML='<div class="sc-title">'+title+'</div><div class="sc-val">'+val+'</div>'+rawHtml;
-    return d;
-  }
+  var finalScore=Math.round((total-totalPenalty)*1000)/1000;
 
   // Raw caption scores for each slot
   var rawMPI=getRawScore(roster['MPI'].band,roster['MPI'].year,'MPI');
@@ -379,24 +438,40 @@ function finishGame(){
   var rawVPE=getRawScore(roster['VPE'].band,roster['VPE'].year,'VPE');
   var rawMGE=getRawScore(roster['MGE Tot'].band,roster['MGE Tot'].year,'MGE Tot');
   var rawVGE=getRawScore(roster['VGE'].band,roster['VGE'].year,'VGE');
-
   var rawMusic=(rawMPI!==null&&rawMPE!==null)?(rawMPI+rawMPE)/2:null;
   var rawVisual=(rawVPI!==null&&rawVPE!==null)?(rawVPI+rawVPE)/2:null;
   var rawTotalGE=(rawMGE!==null&&rawVGE!==null)?rawMGE+rawVGE:null;
   var rawTotal=(rawMusic!==null&&rawVisual!==null&&rawTotalGE!==null)?rawMusic+rawVisual+rawTotalGE:null;
 
   if(isNorm&&rawTotal!==null){
-    document.getElementById('scoreBig').innerHTML=total.toFixed(3)+'<span class="score-raw-sub">'+'Score without normalization/weight: '+rawTotal.toFixed(3)+'</span>';
+    // show raw subtotal note on subtotal card — handled in makeCard via rawTotal arg
   }
 
-  cards.appendChild(makeCard('Music',music.toFixed(3),rawMusic,''));
-  cards.appendChild(makeCard('Visual',visual.toFixed(3),rawVisual,''));
-  cards.appendChild(makeCard('Music General Effect',MGE.toFixed(3),rawMGE,''));
-  cards.appendChild(makeCard('Visual General Effect',VGE.toFixed(3),rawVGE,''));
-  cards.appendChild(makeCard('Total General Effect',totalGE.toFixed(3),rawTotalGE,'total-ge'));
-  cards.appendChild(makeCard('Total Score',total.toFixed(3),rawTotal,'total-score'));
+  var cards=document.getElementById('scoreCards');
+  cards.innerHTML='';
 
-  runSimulation(total);
+  function makeCard(title,val,rawVal,redText){
+    var d=document.createElement('div');
+    d.className='sc-card';
+    var rawHtml='';
+    if(isNorm&&rawVal!==null){
+      rawHtml='<div class="sc-raw">Score without normalization/weight: '+rawVal.toFixed(3)+'</div>';
+    }
+    var valClass=redText?'sc-val sc-val-red':'sc-val';
+    d.innerHTML='<div class="sc-title">'+title+'</div><div class="'+valClass+'">'+val+'</div>'+rawHtml;
+    return d;
+  }
+
+  cards.appendChild(makeCard('Music',music.toFixed(3),rawMusic,false));
+  cards.appendChild(makeCard('Visual',visual.toFixed(3),rawVisual,false));
+  cards.appendChild(makeCard('Music General Effect',MGE.toFixed(3),rawMGE,false));
+  cards.appendChild(makeCard('Visual General Effect',VGE.toFixed(3),rawVGE,false));
+  cards.appendChild(makeCard('Total General Effect',totalGE.toFixed(3),rawTotalGE,false));
+  cards.appendChild(makeCard('Subtotal',total.toFixed(3),rawTotal,false));
+  cards.appendChild(makeCard('Penalty',totalPenalty>0?'-'+totalPenalty.toFixed(1):'0.0',null,totalPenalty>0));
+  cards.appendChild(makeCard('Final Score',finalScore.toFixed(3),null,true));
+
+  runSimulation(finalScore);
   document.getElementById('scoreBoard').classList.add('on');
 }
 
@@ -435,7 +510,7 @@ function runSimulation(score){
 }
 
 function resetGame(){
-  roster={};currentSpin=null;respinBandUsed=false;respinYearUsed=false;gameOver=false;
+  roster={};currentSpin=null;respinBandCount=0;respinYearCount=0;gameOver=false;totalPenalty=0;
   DATA=currentMode==='norm'?DATA_NORM:DATA_RAW;
   PLACEMENT_DATA=currentMode==='norm'?PLACEMENT_DATA_NORM:PLACEMENT_DATA_RAW;
   lastAssigned=null;
