@@ -538,7 +538,7 @@ function openShareModal(){
       shareImageBlob=blob;
       document.getElementById('shareDownloadBtn').textContent='⬇ Download Image';
       document.getElementById('shareDownloadBtn').disabled=false;
-    },'image/png');
+    },'image/jpeg',0.92);
   }).catch(function(err){
     console.error('html2canvas:',err);
     document.getElementById('shareDownloadBtn').textContent='Download unavailable';
@@ -554,7 +554,7 @@ function closeShareModal(e){
 function doDownload(){
   if(!shareImageBlob)return;
   var url=URL.createObjectURL(shareImageBlob);
-  var a=document.createElement('a');a.href=url;a.download='bandscores-caption-draft.png';a.click();
+  var a=document.createElement('a');a.href=url;a.download='bandscores-caption-draft.jpg';a.click();
   setTimeout(function(){URL.revokeObjectURL(url);},1000);
 }
 
@@ -575,8 +575,8 @@ function doNativeShare(){
   var url=buildShareURL();
   var text='I scored '+score+' in '+(isDCI?'DCI':'BOA')+' Caption Draft! Think you can beat me?';
   var shareData={title:'bandScores Caption Draft',text:text,url:url};
-  if(shareImageBlob&&navigator.canShare&&navigator.canShare({files:[new File([shareImageBlob],'score.png',{type:'image/png'})]})){
-    shareData.files=[new File([shareImageBlob],'bandscores-caption-draft.png',{type:'image/png'})];
+  if(shareImageBlob&&navigator.canShare&&navigator.canShare({files:[new File([shareImageBlob],'score.jpg',{type:'image/jpeg'})]})){
+    shareData.files=[new File([shareImageBlob],'bandscores-caption-draft.jpg',{type:'image/jpeg'})];
   }
   navigator.share(shareData).catch(function(){});
 }
