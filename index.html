@@ -92,8 +92,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .sim-bar.hi{background:var(--red)}
 .sim-pct{font-size:11px;font-weight:700;color:var(--dim);min-width:36px}
 .end-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.play-again{background:transparent;border:1.5px solid var(--red);border-radius:8px;padding:10px 28px;color:var(--red);font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.15s}
-.play-again:hover{background:var(--red);color:#fff}
+.play-again{background:var(--red);border:none;border-radius:8px;padding:10px 28px;color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.15s}
+.play-again:hover{background:#d4302a}
 .share-btn{background:var(--blue);border:none;border-radius:8px;padding:10px 28px;color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.15s}
 .share-btn:hover{background:#3d7ca6}
 .share-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
@@ -119,6 +119,10 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .share-native-row{padding:0 18px 14px}
 .share-action-btn{background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:10px;color:#fff;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;transition:.15s;width:100%;margin-top:8px}
 .share-action-btn:hover{background:rgba(255,255,255,0.15)}
+.share-preview-wrap{padding:12px 18px 0;text-align:center}
+.share-preview-img{width:100%;border-radius:8px;display:block;cursor:pointer}
+.share-preview-hint{font-size:11px;font-weight:700;color:var(--blue);margin-top:8px;letter-spacing:.5px}
+.share-preview-loading{font-size:11px;color:var(--dim);font-style:italic;padding:12px 0}
 .share-action-native{background:var(--blue);border-color:var(--blue)}
 .share-action-native:hover{background:#3d7ca6}
 .rs-penalty{font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--red);margin-top:2px;font-style:italic}
@@ -189,7 +193,7 @@ body.light .norm-badge{background:rgba(17,54,77,0.1);color:var(--navy)} body.lig
   </div>
   <div class="end-btns">
     <button class="play-again" onclick="resetGame()">Play Again</button>
-    <button class="share-btn" onclick="openShareModal()">&#8679; Share Score</button>
+    <button class="share-btn" onclick="openShareModal()">Share Score</button>
   </div>
 </div>
 </div>
@@ -209,12 +213,17 @@ body.light .norm-badge{background:rgba(17,54,77,0.1);color:var(--navy)} body.lig
       <div class="share-card-roster" id="shareCardRoster"></div>
       <div class="share-card-url">bandscores.net</div>
     </div>
+    <div class="share-preview-wrap">
+      <img id="sharePreviewImg" class="share-preview-img" src="" alt="Score card preview" style="display:none"/>
+      <div class="share-preview-hint" id="sharePreviewHint" style="display:none">&#128247; Long-press image to save to Photos</div>
+      <div class="share-preview-loading" id="sharePreviewLoading">Generating image...</div>
+    </div>
     <div class="share-actions">
-      <button class="share-action-btn" id="shareDownloadBtn" onclick="doDownload()">&#8681; Download Image</button>
+      <button class="share-action-btn" id="shareDownloadBtn" onclick="doDownload()" style="display:none">&#8681; Download Image</button>
       <button class="share-action-btn" id="shareCopyBtn" onclick="doCopyLink()">&#128279; Copy Link</button>
     </div>
     <div class="share-native-row" id="shareNativeRow" style="display:none">
-      <button class="share-action-btn share-action-native" onclick="doNativeShare()">&#8679; Share via...</button>
+      <button class="share-action-btn share-action-native" onclick="doNativeShare()">Share via...</button>
     </div>
   </div>
 </div>
@@ -530,19 +539,33 @@ function openShareModal(){
   });
   if(navigator.share){document.getElementById('shareNativeRow').style.display='block';}
   document.getElementById('shareOverlay').classList.add('open');
+  document.getElementById('sharePreviewImg').style.display='none';
+  document.getElementById('sharePreviewImg').src='';
+  document.getElementById('sharePreviewHint').style.display='none';
+  document.getElementById('sharePreviewLoading').style.display='block';
+  document.getElementById('sharePreviewLoading').textContent='Generating image...';
+  document.getElementById('shareDownloadBtn').style.display='none';
   shareImageBlob=null;
-  document.getElementById('shareDownloadBtn').textContent='⏳ Generating...';
-  document.getElementById('shareDownloadBtn').disabled=true;
   html2canvas(document.getElementById('shareCard'),{scale:2,useCORS:true,backgroundColor:null,logging:false}).then(function(canvas){
+    // Show inline preview for long-press save to Photos
+    var dataURL=canvas.toDataURL('image/jpeg',0.92);
+    var previewImg=document.getElementById('sharePreviewImg');
+    previewImg.src=dataURL;
+    previewImg.style.display='block';
+    document.getElementById('sharePreviewLoading').style.display='none';
+    document.getElementById('sharePreviewHint').style.display='block';
+    // Also create blob for download and native share
     canvas.toBlob(function(blob){
       shareImageBlob=blob;
-      document.getElementById('shareDownloadBtn').textContent='⬇ Download Image';
-      document.getElementById('shareDownloadBtn').disabled=false;
+      // Show download button on non-iOS (iOS users use long-press)
+      var isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+      if(!isIOS){
+        document.getElementById('shareDownloadBtn').style.display='block';
+      }
     },'image/jpeg',0.92);
   }).catch(function(err){
     console.error('html2canvas:',err);
-    document.getElementById('shareDownloadBtn').textContent='Download unavailable';
-    document.getElementById('shareDownloadBtn').disabled=false;
+    document.getElementById('sharePreviewLoading').textContent='Image generation failed.';
   });
 }
 
