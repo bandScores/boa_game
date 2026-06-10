@@ -460,50 +460,121 @@ function openScoreImage(){
   var finalScore=cards.length?cards[0].querySelector('.sc-val').textContent:'\u2014';
   var gameName=isDCI?'DCI Caption Draft':'BOA Caption Draft';
 
-  // Build roster cards HTML (2-column grid)
-  var cardSlot=function(cap,band,year){
-    return '<div style="background:rgba(255,255,255,0.07);border-radius:10px;padding:14px 16px">'
-      +'<div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#4c8db8;margin-bottom:6px">'+cap+'</div>'
-      +'<div style="font-size:16px;font-weight:900;font-style:italic;color:#fff;line-height:1.2;margin-bottom:4px">'+band+'</div>'
-      +'<div style="font-size:13px;font-weight:700;color:#7aa8c4">'+year+'</div>'
-      +'</div>';
-  };
-
-  var rosterCards='';
+  // Collect roster entries
+  var entries=[];
   captions.forEach(function(c){
-    if(!(c.key in roster))return;
-    var e=roster[c.key];
-    rosterCards+=cardSlot(c.full,e.band,e.year);
+    if(c.key in roster){var e=roster[c.key];entries.push({cap:c.full,band:e.band,year:String(e.year)});}
   });
 
-  var html='<!DOCTYPE html><html><head>'
-    +'<meta charset="UTF-8">'
-    +'<meta name="viewport" content="width=device-width,initial-scale=1">'
-    +'<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">'
-    +'<style>'
-    +'*{margin:0;padding:0;box-sizing:border-box}'
-    +'body{background:#0d2b3e;font-family:Montserrat,sans-serif;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px}'
-    +'</style>'
-    +'</head><body>'
-    +'<div style="background:linear-gradient(160deg,#0f3448 0%,#11364d 50%,#142f44 100%);border-radius:20px;padding:32px 28px;max-width:500px;width:100%;position:relative;overflow:hidden">'
-    +'<div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#bf2a25,#4c8db8)"></div>'
-    +'<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:20px">'
-    +'<span style="font-size:17px;font-weight:900;font-style:italic;color:#fff;letter-spacing:-0.5px">bandscores</span>'
-    +'<span style="font-size:11px;font-weight:700;color:#4c8db8;letter-spacing:2px;text-transform:uppercase">'+gameName+'</span>'
-    +'</div>'
-    +'<div style="font-size:26px;font-weight:900;color:#fff;line-height:1.25;margin-bottom:24px">'
-    +'I scored <span style="color:#bf2a25">'+finalScore+'</span> in '+gameName+'!<br>Think you can beat me?'
-    +'</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px">'
-    +rosterCards
-    +'</div>'
-    +'<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.25);text-align:right;letter-spacing:1.5px">bandscores.net</div>'
-    +'</div>'
-    +'</body></html>';
+  // Canvas dimensions
+  var W=700,pad=40;
+  var headerH=100,headlineH=100,cardH=80,cardGap=10,cardCols=2;
+  var rows=Math.ceil(entries.length/2);
+  var gridH=rows*(cardH+cardGap)-cardGap;
+  var footerH=50;
+  var H=pad+headerH+headlineH+gridH+footerH+pad;
 
-  var blob=new Blob([html],{type:'text/html'});
-  var url=URL.createObjectURL(blob);
-  window.open(url,'_blank');
+  var canvas=document.createElement('canvas');
+  canvas.width=W; canvas.height=H;
+  var ctx=canvas.getContext('2d');
+
+  // Background gradient
+  var bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#0f3448');
+  bg.addColorStop(0.5,'#11364d');
+  bg.addColorStop(1,'#142f44');
+  ctx.fillStyle=bg;
+  roundRect(ctx,0,0,W,H,20);
+  ctx.fill();
+
+  // Top stripe gradient
+  var stripe=ctx.createLinearGradient(0,0,W,0);
+  stripe.addColorStop(0,'#bf2a25');
+  stripe.addColorStop(1,'#4c8db8');
+  ctx.fillStyle=stripe;
+  ctx.fillRect(0,0,W,4);
+
+  var y=pad;
+
+  // Brand header
+  ctx.font='900 italic 20px Montserrat,sans-serif';
+  ctx.fillStyle='#ffffff';
+  ctx.fillText('bandscores',pad,y+22);
+  var bsW=ctx.measureText('bandscores').width;
+  ctx.font='700 12px Montserrat,sans-serif';
+  ctx.fillStyle='#4c8db8';
+  ctx.fillText(gameName.toUpperCase(),pad+bsW+12,y+20);
+  y+=headerH-30;
+
+  // Headline
+  ctx.fillStyle='#ffffff';
+  var headline='I scored ';
+  var scoreStr=finalScore;
+  var rest=' in '+gameName+'!';
+  var line2='Think you can beat me?';
+  ctx.font='900 28px Montserrat,sans-serif';
+  ctx.fillText(headline,pad,y);
+  var hw=ctx.measureText(headline).width;
+  ctx.fillStyle='#bf2a25';
+  ctx.fillText(scoreStr,pad+hw,y);
+  var sw=ctx.measureText(scoreStr).width;
+  ctx.fillStyle='#ffffff';
+  ctx.fillText(rest,pad+hw+sw,y);
+  y+=38;
+  ctx.fillText(line2,pad,y);
+  y+=headlineH-10;
+
+  // Roster cards
+  var cardW=(W-pad*2-cardGap)/2;
+  entries.forEach(function(e,i){
+    var col=i%2, row=Math.floor(i/2);
+    var cx=pad+col*(cardW+cardGap);
+    var cy=y+row*(cardH+cardGap);
+    // Card bg
+    ctx.fillStyle='rgba(255,255,255,0.07)';
+    roundRect(ctx,cx,cy,cardW,cardH,10);
+    ctx.fill();
+    // Caption label
+    ctx.font='700 10px Montserrat,sans-serif';
+    ctx.fillStyle='#4c8db8';
+    ctx.fillText(e.cap.toUpperCase(),cx+14,cy+20);
+    // Band name
+    ctx.font='900 italic 15px Montserrat,sans-serif';
+    ctx.fillStyle='#ffffff';
+    ctx.fillText(e.band,cx+14,cy+42);
+    // Year
+    ctx.font='700 13px Montserrat,sans-serif';
+    ctx.fillStyle='#7aa8c4';
+    ctx.fillText(e.year,cx+14,cy+62);
+  });
+
+  y+=gridH+20;
+
+  // Footer
+  ctx.font='700 11px Montserrat,sans-serif';
+  ctx.fillStyle='rgba(255,255,255,0.25)';
+  var footTxt='bandscores.net';
+  ctx.fillText(footTxt,W-pad-ctx.measureText(footTxt).width,y+20);
+
+  // Open as image in new tab
+  var imgURL=canvas.toDataURL('image/png');
+  var win=window.open('','_blank');
+  win.document.write('<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{margin:0;padding:0;background:#0d2b3e}img{max-width:100%;display:block;margin:0 auto}</style></head><body><img src="'+imgURL+'"/></body></html>');
+  win.document.close();
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
 }
 
 
