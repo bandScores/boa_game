@@ -556,11 +556,9 @@ function openScoreImage(){
   var footTxt='bandscores.net';
   ctx.fillText(footTxt,W-pad-ctx.measureText(footTxt).width,y+20);
 
-  // Open as image in new tab
+  // Open raw PNG data URL directly — iOS long-press will offer "Add to Photos"
   var imgURL=canvas.toDataURL('image/png');
-  var win=window.open('','_blank');
-  win.document.write('<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{margin:0;padding:0;background:#0d2b3e}img{max-width:100%;display:block;margin:0 auto}</style></head><body><img src="'+imgURL+'"/></body></html>');
-  win.document.close();
+  window.open(imgURL,'_blank');
 }
 
 function roundRect(ctx,x,y,w,h,r){
